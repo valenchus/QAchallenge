@@ -1,5 +1,6 @@
 // @ts-check
 const { test, expect } = require("@playwright/test");
+const randomId = Math.random().toString(36).substring(7);
 
 test.only("post a text only tweet", async ({ page }) => {
   await page.goto("https://frontend-training-taupe.vercel.app/login");
@@ -13,10 +14,10 @@ test.only("post a text only tweet", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
 
   // authenticated
-  // preguntar a carlos por que no encuentra el Tweet, pero si encuentra el
-  // Explore/Message/Profile cuando se achica la pantalla
   // Como referenciar al numero de la derecha del boton de comentarios?
-  await expect(
-    page.getByRole("button", { name: "Tweet", exact: true })
-  ).toBeVisible();
+  await page.getByRole("button", { name: "Tweet", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Tweet", exact: true }).nth(1)).toBeDisabled()
+  await page.getByPlaceholder('What\'s happening?').fill(`${randomId}`);
+  await page.getByRole("button", { name: "Tweet", exact: true }).nth(1).click();
+  await expect(page.getByText(`${randomId}`)).toBeVisible();
 });
