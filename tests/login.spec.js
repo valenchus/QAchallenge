@@ -1,14 +1,12 @@
 // @ts-check
-const { test, expect } = require("@playwright/test");
+const { test } = require("@playwright/test");
+import { LoginPage } from "../pageObjects/login.pageObject";
+
 
 test("login to the page", async ({ page }) => {
+
+  const loginPage = new LoginPage(page);
   await page.goto("https://frontend-training-taupe.vercel.app/login");
-
-  await page.getByLabel("Username").click();
-  await page.getByLabel("Username").fill("valentino");
-
-  await page.getByLabel("Password").click();
-  await page.getByLabel("Password").fill("Sirius1337!!");
-  await page.getByText("Login").click();
-  await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+  await loginPage.doLogin("m@p.com", "Asdasd*123");
+  await loginPage.checkLogin();
 });
