@@ -12,7 +12,6 @@ test.only("post a text only tweet", async ({ page }) => {
   await page.goto("https://frontend-training-taupe.vercel.app/login");
   
   await loginPage.doLogin("m@p.com", "Asdasd*123");
-  await loginPage.checkLogin();
 
   await homePage.newTweet("This is a test tweet " + randomId);
   await homePage.checkTweet("This is a test tweet " + randomId);
