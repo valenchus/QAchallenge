@@ -7,12 +7,12 @@ exports.RegisterPage = class RegisterPage {
    */
   constructor(page) {
     this.page = page;
-    this.nameInput = page.locator('xpath=//*[@id="root"]/div/div/div/form/div[1]/input');
-    this.usernameInput = page.locator('xpath=//*[@id="root"]/div/div/div/form/div[2]/input');
-    this.emailInput = page.locator('xpath=//*[@id="root"]/div/div/div/form/div[3]/input');
-    this.passwordInput = page.locator('xpath=//*[@id="root"]/div/div/div/form/div[4]/input');
-    this.confirmPasswordInput = page.locator('xpath=//*[@id="root"]/div/div/div/form/div[5]/input');
-    this.registerButton = page.locator('xpath=//*[@id="root"]/div/div/div/form/button');
+    this.nameInput = page.locator("xpath=//input[contains(@aria-label, 'Name')]");
+    this.usernameInput = page.locator("xpath=//input[contains(@aria-label, 'Username')]");
+    this.emailInput = page.locator("xpath=//input[contains(@aria-label, 'Email')]");
+    this.passwordInput = page.locator("xpath=//input[contains(@aria-label, 'Password')]");
+    this.confirmPasswordInput = page.locator("xpath=//input[contains(@aria-label, 'Confirm Password')]");
+    this.registerButton = page.locator("xpath=//button[contains(text(), 'Register')]");
   }
   
   async fillName(name) {
@@ -41,7 +41,7 @@ exports.RegisterPage = class RegisterPage {
   }
 
   async doRegister(name, username, email, password, confpassword) {
-    await this.fillName(username);
+    await this.fillName(name);
     await this.fillUsername(username);
     await this.fillEmail(email);
     await this.fillPassword(password);
