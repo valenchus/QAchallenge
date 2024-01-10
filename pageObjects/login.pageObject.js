@@ -7,9 +7,9 @@ exports.LoginPage = class LoginPage {
    */
   constructor(page) {
     this.page = page;
-    this.usernameInput = page.locator('xpath=//*[@id="root"]/div/div/div/form/div[1]/input');
-    this.passwordInput = page.locator('xpath=//*[@id="root"]/div/div/div/form/div[2]/input');
-    this.loginButton = page.locator('xpath=//*[@id="root"]/div/div/div/form/button');
+    this.usernameInput = page.locator("xpath=//input[contains(@aria-label, 'Username')]");
+    this.passwordInput = page.locator("xpath=//input[contains(@aria-label, 'Password')]");
+    this.loginButton = page.locator("xpath=//button[contains(text(), 'Login')]");
   }
   
   async fillUsername(username) {
@@ -26,9 +26,6 @@ exports.LoginPage = class LoginPage {
     await this.fillUsername(username);
     await this.fillPassword(password);
     await this.loginButton.click();
-  }
-
-  async checkLogin() {
     await expect(this.page).toHaveURL('https://frontend-training-taupe.vercel.app');
   }
 };

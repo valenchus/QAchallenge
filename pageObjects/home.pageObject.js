@@ -7,12 +7,12 @@ exports.HomePage = class HomePage {
    */
   constructor(page) {
     this.page = page;
-    this.newTweetButton = page.locator('xpath=//*[@id="root"]/div/div/div[1]/div/button');
-    this.modalTweetButton = page.locator('xpath=//*[@id="root"]/div/div/div[1]/div/div[2]/div/div/div/div/div/div[2]/div[2]/button');
-    this.modalTweetTextArea = page.locator('xpath=//*[@id="root"]/div/div/div[1]/div/div[2]/div/div/div/div/div/div[1]/textarea');
-    this.firstTweet = page.locator('xpath=//*[@id="root"]/div/div/main/div[2]/div[2]');
+    this.newTweetButton = page.locator("xpath=//button[contains(@class, 'sc-ksJisA auIOZ sc-cOqaIB cpCSpb') and contains(text(), 'Tweet')]");
+    this.modalTweetButton = page.locator("xpath=//button[contains(@class, 'sc-ksJisA eheooK') and contains(text(), 'Tweet')]");
+    this.modalTweetTextArea = page.locator("xpath=//textarea");
+    this.firstTweet = page.locator("xpath=(//div[contains(@class, 'sc-dtgxmn jobacT')])[1]");
   }
-  
+
   async newTweet(body) {
     await this.newTweetButton.click();
     await this.modalTweetTextArea.fill(body);
@@ -20,6 +20,6 @@ exports.HomePage = class HomePage {
   }
 
   async checkTweet(body) {
-    await expect(this.firstTweet).toContainText(body);
+    await expect(this.firstTweet).toHaveText(body);
   }
 };
