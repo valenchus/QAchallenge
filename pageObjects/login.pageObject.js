@@ -10,6 +10,12 @@ exports.LoginPage = class LoginPage {
     this.usernameInput = page.locator("xpath=//input[contains(@aria-label, 'Username')]");
     this.passwordInput = page.locator("xpath=//input[contains(@aria-label, 'Password')]");
     this.loginButton = page.locator("xpath=//button[contains(text(), 'Login')]");
+    this.registerButton = page.locator("xpath=//button[contains(text(), 'Register')]");
+    this.errorLabel = page.locator("xpath=(//label[contains(@class, 'sc-hBpgZr dqbdjj sc-eEyyFR iJqsrx')])[1]");
+  }
+
+  async goToRegister() {
+    await this.registerButton.click();
   }
   
   async fillUsername(username) {
@@ -23,9 +29,18 @@ exports.LoginPage = class LoginPage {
   }
 
   async doLogin(username, password) {
+    await this.page.goto(process.env.BASE_URL + "/login");
     await this.fillUsername(username);
     await this.fillPassword(password);
     await this.loginButton.click();
-    await expect(this.page).toHaveURL('https://frontend-training-taupe.vercel.app');
+  }
+
+  async checkLogin() {
+    await expect(this.page).toHaveURL(process.env.BASE_URL);
+  }
+
+  async checkLoginError() {
+    await expect(this.errorLabel).toBeVisible();
+    await expect(this.page).toHaveURL(process.env.BASE_URL + "/login");
   }
 };
