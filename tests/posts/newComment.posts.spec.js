@@ -1,25 +1,22 @@
 import "dotenv/config";
-const { test, expect } = require("@playwright/test");
+const { test } = require("@playwright/test");
+import { LoginPage } from "../../pageObjects/login.pageObject";
+import { HomePage } from "../../pageObjects/home.pageObject";
 
-test.describe("post a text only tweet", () => {
+const randomId = Math.random().toString(36).substring(7);
 
-  test.skip("post a text only tweet", async ({ page }) => {
-    await page.goto(process.env.BASE_URL + "/login");
+test.describe("Comment tests", () => {
 
-    await page.getByLabel("Username").click();
-    await page.getByLabel("Username").fill("valentino");
+  test.only("post a text only comment", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const homePage = new HomePage(page);
 
-    await page.getByLabel("Password").click();
-    await page.getByLabel("Password").fill("Sirius1337!!");
-    await page.getByText("Login").click();
-    await expect(page.getByRole("heading", { name: "Home" })).toBeVisible();
+    await loginPage.doLogin(process.env.USER_USERNAME, process.env.USER_PASSWORD);
 
+    await homePage.newTweet("This is a test tweet " + randomId);
+    await homePage.checkBodyTweet("This is a test tweet " + randomId);
 
-    const myComment = "esta es una respuesta automatica";
-    await expect(page.getByAltText("chat-icon").first()).toBeVisible();
-    await expect(page.getByAltText("chat-icon").first().click());
-    await page.getByPlaceholder("Tweet your reply").fill(myComment);
-    await page.getByRole("button", { name: "Tweet" }).click();
-    await expect(page.getByText(myComment)).toBeVisible();
+    await homePage.newComment("This is a test comment " + randomId);
+    await homePage.checkBodyComment("This is a test comment " + randomId);
   });
 });

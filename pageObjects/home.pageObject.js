@@ -1,4 +1,5 @@
 const { expect } = require('@playwright/test');
+import path from 'path';
 
 exports.HomePage = class HomePage {
 
@@ -17,16 +18,26 @@ exports.HomePage = class HomePage {
     this.threeDotButton = page.locator("xpath=//div[contains(@class, 'sc-jOHGOj jaNlsc')]");
     this.logOutButton = page.locator("xpath=//div[contains(@class, 'sc-hTJqdO lbWFQX')]//div[contains(text(), 'Log out')]")
     this.modalLogOutButton = page.locator("xpath=//button[contains(@class, 'sc-ksJisA caRJvg')]")
+    this.postModalError = page.locator("xpath=(//label[contains(@class, 'sc-hBpgZr dqbdjj')])[1]")
+    this.uploadImageInput = page.locator("xpath=//input[contains(@id, 'file-input')]")
+    this.postImage = page.locator("xpath=(//div[contains(@class, 'sc-fEyylQ jbGfBU sc-cZhcFc liBIsr')]//img)[1]")
+    this.commentButton = page.locator("xpath=(//img[contains(@alt, 'chat-icon')])[1]")
+    this.firstCommentText = page.locator("xpath=(//div[contains(@class, 'sc-dktgqL bwzhgt')]//div[contains(@class, 'sc-tIxES jRRtdU')]//div[contains(@class, 'sc-dtgxmn jobacT')]//div)[1]")
   }
 
   async newTweet(body) {
     await this.newTweetButton.click();
+    await expect(this.modalTweetButton.isDisabled()).toBe(true)
     await this.modalTweetTextArea.fill(body);
     await this.modalTweetButton.click();
   }
 
-  async checkTweet(body) {
+  async checkBodyTweet(body) {
     await expect(this.firstTweet).toHaveText(body);
+  }
+
+  async checkImageTweet() {
+    await expect(this.postImage).toBeVisible();
   }
 
   async logOut() {
@@ -34,5 +45,28 @@ exports.HomePage = class HomePage {
     await this.logOutButton.click();
     await modalLogOutButton.click();
     await expect(this.page).toHaveURL(process.env.BASE_URL + "/login");
+  }
+
+  async checkModalError() {
+    await expect(this.postModalError).toBeVisible();
+  }
+
+  async newTweetWithImage(body) {
+    await this.newTweetButton.click();
+    await expect(this.modalTweetButton.isDisabled()).toBe(true)
+    await this.modalTweetTextArea.fill(body);
+    await this.uploadImageInput.setInputFiles(path.join(__dirname, 'files/perrito.jpg'));
+    await this.modalTweetButton.click();
+  }
+
+  async newComment(body) {
+    await this.commentButton.click();
+    await expect(this.modalTweetButton.isDisabled()).toBe(true)
+    await this.modalTweetTextArea.fill(body);
+    await this.modalTweetButton.click();
+  }
+
+  async checkBodyComment(body) {
+    await expect(this.firstCommentText).toHaveText(body);
   }
 };
