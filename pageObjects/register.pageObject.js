@@ -15,8 +15,8 @@ exports.RegisterPage = class RegisterPage {
     this.loginButton = page.locator("xpath=//button[contains(text(), 'Login')]");
     this.registerButton = page.locator("xpath=//button[contains(text(), 'Register')]");
     this.nameErrorLabel = page.locator("xpath=(//label[contains(@class, 'sc-hBpgZr dqbdjj sc-dwvMdg eOWeZl')])[1]")
-    this.usernameErrorLabel = page.locator("xpath=(//label[contains(@class, 'sc-hBpgZr dqbdjj sc-dwvMdg eOWeZl')])[2]")
     this.emailErrorLabel = page.locator("xpath=(//label[contains(@class, 'sc-hBpgZr dqbdjj sc-dwvMdg eOWeZl')])[3]")
+    this.errorLabel = page.locator("xpath=//label[contains(@class, 'sc-hBpgZr dqbdjj')]")
     this.passwordErrorLabel = page.locator("xpath=(//label[contains(@class, 'sc-hBpgZr dqbdjj sc-dwvMdg eOWeZl')])[4]")
     this.confirmPasswordErrorLabel = page.locator("xpath=(//label[contains(@class, 'sc-hBpgZr dqbdjj sc-dwvMdg eOWeZl')])[5]")
   }
@@ -60,14 +60,28 @@ exports.RegisterPage = class RegisterPage {
     await this.registerButton.click();
   }
 
-  async checkRegister() {
-    await expect(this.page).toHaveURL(process.env.BASE_URL);
+  async checkPasswordError() {
+    await expect(this.passwordErrorLabel).toBeVisible();
+    await expect(this.page).toHaveURL(process.env.BASE_URL + "/register");
   }
 
-  async checkRegisterError() {
+  async checkConfirmPasswordError() {
+    await expect(this.confirmPasswordErrorLabel).toBeVisible();
     await expect(this.page).toHaveURL(process.env.BASE_URL + "/register");
+  }
+
+  async checkError() {
+    await expect(this.errorLabel).toBeVisible();
+    await expect(this.page).toHaveURL(process.env.BASE_URL + "/register");
+  }
+
+  async checkNameError() {
     await expect(this.nameErrorLabel).toBeVisible();
-    await expect(this.usernameErrorLabel).toBeVisible();
+    await expect(this.page).toHaveURL(process.env.BASE_URL + "/register");
+  }
+
+  async checkEmailError() {
     await expect(this.emailErrorLabel).toBeVisible();
+    await expect(this.page).toHaveURL(process.env.BASE_URL + "/register");
   }
 };
