@@ -19,7 +19,7 @@ test.describe("User interaction test", () => {
   })
 
     // TC-0016
-    test.only("Click profile image", async ({ page }) => {
+    test("Click profile image", async ({ page }) => {
 
       const loginPage = new LoginPage(page);
       const homePage = new HomePage(page);

@@ -30,6 +30,7 @@ exports.HomePage = class HomePage {
     this.firstProfileImage = page.locator("xpath=(//div[contains(@class, 'sc-fwdjSP CoZFp')]//div[contains(@class, 'sc-ipMvLY eAZYCx')])[1]")
     this.firstName = page.locator("xpath=(//div[contains(@class, 'sc-fwdjSP CoZFp')]//div[contains(@class, 'sc-fcdPlE cMbONl')])[1]")
     this.firstTweet = page.locator("xpath=(//div[contains(@class, 'sc-dtgxmn jobacT')])[1]");
+    this.firstTweetBodyText = page.locator("xpath=((//div[contains(@class, 'sc-dtgxmn jobacT')])[1]//div)[1]")
     this.firstTweetImage = page.locator("xpath=(//div[contains(@class, 'sc-fEyylQ jbGfBU sc-cZhcFc liBIsr')]//img)[1]")
     this.imageFromModal = page.locator("xpath=//img[contains(@class, 'sc-kDnyCx dPnxip')]")
     this.divOutsideImageModal = page.locator("xpath=//div[contains(@class, 'sc-iBAaJG dqKQza')]")
@@ -150,7 +151,15 @@ exports.HomePage = class HomePage {
     await this.firstProfileImage.click();
   }
 
-  async firstNameText() {
+  async firstTweetName() {
     return await this.firstName.innerText();
+  }
+
+  async openPost() {
+    await this.firstTweetBodyText.click();
+  }
+
+  async firstTweetText() {
+    return await this.firstTweetBodyText.innerText();
   }
 };
